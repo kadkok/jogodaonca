@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogo da Onça 3D — WebGPU | Multiplayer | Bot</title>
+  <meta name="description" content="Jogo da Onça 3D brasileiro com WebGPU/WebGL, multiplayer por sala e bot com 3 níveis.">
+  <style>
+    :root { --bg:#0a0a0a; --fg:#e9e9e9; --card:rgba(20,20,20,.6); --bd:rgba(255,255,255,.1); }
+    * { box-sizing: border-box; }
+    html, body { margin:0; height:100%; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans'; }
+    #ui { position:fixed; top:12px; left:12px; z-index:10; display:flex; gap:8px; flex-wrap:wrap; }
+    .card { backdrop-filter: blur(8px); background: var(--card); border:1px solid var(--bd); border-radius:14px; padding:10px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    .btn { cursor:pointer; border:1px solid var(--bd); background: linear-gradient(#1e1e1e,#101010); color:#fff; padding:8px 12px; border-radius:10px; font-weight:600; }
+    .btn[disabled] { opacity:.5; cursor:not-allowed; }
+    .field { background:#0f0f0f; border:1px solid var(--bd); color:#ddd; padding:8px 10px; border-radius:10px; min-width:130px; }
+    #toast { position:fixed; right:12px; bottom:12px; background:#141414; border:1px solid var(--bd); border-radius:12px; padding:10px 12px; opacity:0; transition:opacity .2s ease; }
+    #hint { position:fixed; bottom:12px; left:12px; max-width:560px; }
+    #fps { position:fixed; top:12px; right:12px; font:12px/1.2 system-ui; opacity:.75 }
+    canvas { display:block; }
+    small { opacity:.85 }
+    a { color:#8fd3ff; }
+  </style>
+</head>
+<body>
+  <div id="ui" class="card">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+      <button id="localBtn" class="btn">Jogar Local</button>
+      <div style="display:flex; align-items:center; gap:6px">
+        <button id="botBtn" class="btn">Contra Bot</button>
+        <select id="botSide" class="field">
+          <option value="C">Bot: Cachorros</option>
+          <option value="J">Bot: Onça</option>
+        </select>
+        <select id="botLevel" class="field">
+          <option value="easy">Fácil</option>
+          <option value="medium" selected>Médio</option>
+          <option value="hard">Difícil</option>
+        </select>
+      </div>
+      <div style="width:1px; height:26px; background:var(--bd)"></div>
+      <button id="newRoom" class="btn">Criar Sala</button>
+      <input id="roomCode" class="field" placeholder="Código da sala" />
+      <button id="joinRoom" class="btn">Entrar</button>
+      <button id="reset" class="btn">Reiniciar</button>
+      <small id="turn"></small>
+    </div>
+  </div>
+  <div id="hint" class="card"><small><b>Regras</b>: Onça (1) vs Cachorros (14). Onça começa. Cachorros não capturam. Onça captura por salto e pode fazer <b>capturas em cadeia</b>. Vence a Onça ao capturar 5; vencem os Cachorros ao imobilizar a Onça. Dica: clique na peça, depois no ponto conectado. Gire a câmera com o mouse/touch.</small></div>
+  <div id="toast"></div>
+  <div id="fps"></div>
+
+  <script type="module">
+    import { initGameUI } from './game.js';
+    // Autostart padrão: Bot joga como Onça (você é Cachorros), nível médio
+    initGameUI({ autostart: { mode: 'bot', side: 'C', level: 'medium' } });
+  </script>
+</body>
+</html>
