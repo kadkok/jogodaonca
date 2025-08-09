@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Jogo da Onça 3D</title>
+  <style>
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer"></div>
+  <div id="toast">Você é os Cachorros 🐕. Clique numa peça para selecionar, depois clique num ponto ligado para mover. Onça captura saltando. Onça começa!</div>
+  <script type="module">
+    import { initGame } from './game.js';
+
+    // Inicia o jogo com você como Cachorros, bot como Onça
+    initGame({
+      mode: 'bot',
+      playerSide: 'C', // C = Cachorros, J = Onça
+      botLevel: 'medium'
+    });
+
+    // Exibir instrução inicial
+    const toast = document.getElementById('toast');
+    setTimeout(() => { toast.style.opacity = 1; }, 200);
+    setTimeout(() => { toast.style.opacity = 0; }, 5200);
+  </script>
+</body>
+</html>
